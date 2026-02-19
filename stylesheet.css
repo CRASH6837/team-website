@@ -56,6 +56,11 @@ table, th, td {
 }
 table {
   width: 75%;
+  background-color: #202020;
+  border: 2px solid black;
+  padding: 25px;
+  margin: 20px;
+  border-radius: 25px; 
 }
 .logo {
  font-family: crashLogo;
