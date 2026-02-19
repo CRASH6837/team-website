@@ -48,7 +48,8 @@ table {
   background-color: #202020;
   padding: 15px;
   border-radius: 15px;
-  border-color: white;
+  border: 2px solid white;
+  border-collapse: collapse;
   width: 75%;
   margin-left: auto;
   margin-right: auto;
