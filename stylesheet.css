@@ -47,3 +47,6 @@ p {
  font-family: crashLogo;
  font-style: italic;
 }
+.maxWidthPhoto {
+ width:auto;
+}
