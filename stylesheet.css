@@ -43,10 +43,10 @@ p {
  margin-right: auto;
  font-size: 25px;
 }
-table {
+table, th, td {
   color: white;
   background-color: #202020;
-  padding: 15px;
+  padding: 10px;
   border-radius: 15px;
   border: 2px solid white;
   border-collapse: collapse;
