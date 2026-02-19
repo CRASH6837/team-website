@@ -54,13 +54,6 @@ table, th, td {
   margin-right: auto;
   font-family: "Archivo Narrow";
 }
-table {
-  width: 75%;
-  background-color: #202020;
-  border: 2px solid black;
-  padding: 25px;
-  border-radius: 25px; 
-}
 .logo {
  font-family: crashLogo;
  font-style: italic;
