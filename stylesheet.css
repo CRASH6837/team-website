@@ -100,7 +100,7 @@ iframe {
 .nav-links li {
   padding: 0 20px;
 }
-.nav-link-item:link .nav-link-item:visited {
+.nav-link-item, .nav-link-item:visited {
   color: white;
   text-decoration: none;
   font-size: 18px;
