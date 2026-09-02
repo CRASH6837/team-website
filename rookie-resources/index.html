@@ -35,7 +35,95 @@
       <h2>Rookie Resources</h2>
     </div>
     <div class="bodyParagraph">
-      <p>Blah blah blah insert stuff here</p>
+      <!-- The title container -->
+      <h1 id="tab-title">Loading Tab...</h1>
+
+      <!-- The text content container -->
+      <div id="doc-output" style="white-space: pre-wrap; line-height: 1.6;">Loading...</div>
+
     </div>
+    
+        <script>
+        // --- CONFIGURATION ---
+        const API_KEY = 'AIzaSyAUH86bVfMHVhR3NDJSjO801DVS4Y6oLqg'; 
+        const DOCUMENT_ID = '1yzmd1V6_1a08d4dktgT0Kn71cjOTr8_uaTw9B9sUOpA';
+        const TARGET_TAB_TITLE = 'Rookie Resources'; // Exact case-sensitive name of your tab
+    
+        async function fetchDocTabText() {
+            const outputDiv = document.getElementById('doc-output');
+            const titleH1 = document.getElementById('tab-title');
+    
+            const url = `https://googleapis.com{DOCUMENT_ID}?includeTabsContent=true&key=${API_KEY}`;
+    
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`Status: ${response.status}`);
+                
+                const docData = await response.json();
+                const targetTab = findTabByTitle(docData.tabs, TARGET_TAB_TITLE);
+    
+                if (!targetTab) {
+                    titleH1.textContent = "Error";
+                    outputDiv.textContent = `Could not find a tab named "${TARGET_TAB_TITLE}".`;
+                    return;
+                }
+    
+                // Update UI with content
+                titleH1.textContent = TARGET_TAB_TITLE;
+                outputDiv.textContent = extractTextFromTab(targetTab);
+    
+            } catch (error) {
+                titleH1.textContent = "Connection Error";
+                outputDiv.textContent = `Failed to load document content. Check API key, Doc ID, and sharing settings.`;
+                console.error(error);
+            }
+        }
+    
+        // Helper to find a tab recursively
+        function findTabByTitle(tabs, title) {
+            if (!tabs) return null;
+            for (const tab of tabs) {
+                if (tab.tabProperties && tab.tabProperties.title === title) return tab;
+                if (tab.childTabs) {
+                    const found = findTabByTitle(tab.childTabs, title);
+                    if (found) return found;
+                }
+            }
+            return null;
+        }
+    
+        // Helper to extract clean raw text from paragraphs and tables
+        function extractTextFromTab(tab) {
+            const contentElements = tab.documentTab?.body?.content;
+            if (!contentElements) return "This tab contains no text.";
+    
+            let resultText = "";
+    
+            for (const element of contentElements) {
+                if (element.paragraph) {
+                    for (const parts of element.paragraph.elements) {
+                        if (parts.textRun?.content) resultText += parts.textRun.content;
+                    }
+                } else if (element.table) {
+                    for (const row of element.table.tableRows) {
+                        for (const cell of row.tableCells) {
+                            for (const cellElement of cell.content) {
+                                if (cellElement.paragraph) {
+                                    for (const parts of cellElement.paragraph.elements) {
+                                        if (parts.textRun?.content) resultText += parts.textRun.content;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return resultText;
+        }
+    
+        // Automatically trigger on page load
+        document.addEventListener('DOMContentLoaded', fetchDocTabText);
+    </script>
+
   </body>
 </html>
